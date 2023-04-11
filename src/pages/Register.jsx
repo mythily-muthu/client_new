@@ -85,7 +85,6 @@ const Register = () => {
     };
     try {
       const res = await axios.post(`${API_BASE_URL}/auth/register`, newUser);
-      console.log(res.data);
     } catch (err) {
       console.log(err);
     }

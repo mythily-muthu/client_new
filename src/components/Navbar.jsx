@@ -5,6 +5,10 @@ import Badge from "@mui/material/Badge";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { Link, useNavigate } from "react-router-dom";
 import Search from "@mui/icons-material/Search";
+import { useDispatch, useSelector } from "react-redux";
+import { logOut } from "../redux/userRedux";
+import axios from "axios";
+import { addProduct } from "../redux/cartRedux";
 
 const Container = styled.div`
   height: 60px;
@@ -69,6 +73,15 @@ const MenuItem = styled.div`
 
 const Navbar = () => {
   let navigate = useNavigate();
+  const user = useSelector((state) => state.user.currentUser);
+  const cart = useSelector((state) => state.cart);
+  console.log("cart", cart);
+  const dispatch = useDispatch();
+  const handleLogOut = (params) => {
+    navigate("/login");
+    dispatch(logOut());
+  };
+
   return (
     <Container>
       <Wrapper>
@@ -81,20 +94,35 @@ const Navbar = () => {
           </SearchContainer>
         </Left>
         {/* center */}
-        <Center>
+        <Center onClick={() => navigate("/")}>
           <Logo>SHOPX</Logo>
         </Center>
         {/* right */}
         <Right>
-          <MenuItem onClick={() => navigate("/register")}>REGISTER</MenuItem>
-          <MenuItem onClick={() => navigate("/login")}>SIGN IN</MenuItem>
-          <Link to="/cart">
-            <MenuItem>
-              <Badge badgeContent={5} color="primary">
-                <ShoppingCartOutlinedIcon />
-              </Badge>
+          <MenuItem>
+            {user.username[0].toUpperCase() + user.username.slice(1)}
+          </MenuItem>
+          {user.isAdmin && (
+            <MenuItem onClick={() => navigate("/admin/productlist")}>
+              PRODUCTS
             </MenuItem>
-          </Link>
+          )}
+          {user ? (
+            <MenuItem onClick={handleLogOut}>LOGOUT</MenuItem>
+          ) : (
+            <>
+              <MenuItem onClick={() => navigate("/register")}>
+                REGISTER
+              </MenuItem>
+              <MenuItem onClick={() => navigate("/login")}>SIGN IN</MenuItem>
+            </>
+          )}
+
+          <MenuItem onClick={() => navigate("/cart")}>
+            <Badge badgeContent={cart.products.length} color="primary">
+              <ShoppingCartOutlinedIcon />
+            </Badge>
+          </MenuItem>
         </Right>
       </Wrapper>
     </Container>

@@ -5,6 +5,7 @@ import ShoppingCartOutlined from "@mui/icons-material/ShoppingCartOutlined";
 import FavoriteBorderOutlined from "@mui/icons-material/FavoriteBorderOutlined";
 
 const Info = styled.div`
+  opacity: 0;
   width: 100%;
   height: 100%;
   position: absolute;

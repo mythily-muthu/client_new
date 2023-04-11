@@ -1,4 +1,3 @@
-import { Divider } from "@mui/material";
 import React from "react";
 import Announcement from "../components/Announcement";
 import Categories from "../components/Categories";

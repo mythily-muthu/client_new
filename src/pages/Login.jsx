@@ -4,9 +4,10 @@ import styled from "styled-components";
 import { mobile } from "../responsive";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { API_BASE_URL } from "../requestMethods";
+import { API_BASE_URL, publicRequest } from "../requestMethods";
 import { login } from "../redux/apiCalls";
 import { useNavigate } from "react-router-dom";
+import { loginFailure, loginStart, loginSuccess } from "../redux/userRedux";
 
 const Container = styled.div`
   width: 100vw;
@@ -80,8 +81,18 @@ const Login = () => {
   const navigate = useNavigate();
   const handleLogin = async (e) => {
     e.preventDefault();
-    login(dispatch, { username, password });
-    navigate("/");
+    dispatch(loginStart());
+    try {
+      const res = await publicRequest.post("/auth/login", {
+        username,
+        password,
+      });
+
+      dispatch(loginSuccess(res.data));
+      if (res.status === 200) navigate("/");
+    } catch (err) {
+      dispatch(loginFailure());
+    }
   };
   // 1. create a post req
   // 2. username and password

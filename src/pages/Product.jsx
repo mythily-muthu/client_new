@@ -147,7 +147,7 @@ const Product = () => {
     }
   };
 
-  const handleClick = () => {
+  const handleAddToCart = () => {
     dispatch(addProduct({ ...product, quantity, color, size }));
   };
   return (
@@ -184,7 +184,7 @@ const Product = () => {
               <Amount>{quantity}</Amount>
               <Add onClick={() => handleQuantity("inc")} />
             </AmountContainer>
-            <Button onClick={handleClick}>ADD TO CART</Button>
+            <Button onClick={handleAddToCart}>ADD TO CART</Button>
           </AddContainer>
         </InfoContainer>
       </Wrapper>
